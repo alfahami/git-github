@@ -46,15 +46,25 @@ Version Control System (VCS) for tracking changes in computer files.
        $ git add/rm                          : Update what will be committed
 
   ### 2- Amending the most recent commit message (change last commit message)
-       $ git commit --amend
-       will open your editor, allowing you to change the commit message of the most recent commit. 
-       Additionally, you can set the commit message directly in the command line with:
+       `$ git commit --amend`
+      
+ will open your editor, allowing you to change the commit message of the most recent commit. 
+Additionally, you can set the commit message directly in the command line with:
 
-       $ git commit --amend -m "New commit message"
+      `$ git commit --amend -m "New commit message"`
        
-       …however, this can make multi-line commit messages or small corrections more cumbersome to enter.
+…however, this can make multi-line commit messages or small corrections more cumbersome to enter.
 
-       Make sure you don't have any working copy changes staged before doing this or they will get committed too. (Unstaged changes will not get committed.)
+Make sure you don't have any working copy changes staged before doing this or they will get committed too. (Unstaged changes will not get committed.)
+
+#### Amend the last commit with the correct author
+`git commit --amend --reset-author --no-edit`
+
+Verify it's correct
+`git log -1 --pretty=format:"%an <%ae>"`
+
+#### Force to push
+`git push --force-with-lease`
 
    ### 3- On a remote Repository(GitHub, BitBucket, ...)
       
@@ -216,6 +226,7 @@ the git config command is a convenient utility to quickly create aliases.
 git revert --no-commit 0766c053..HEAD
 git commit
 git push # if you want to push in a remote repo
+`
 
 ## Revert a commit pushed remotely
 
