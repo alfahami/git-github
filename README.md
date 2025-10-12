@@ -129,9 +129,31 @@ Version Control System (VCS) for tracking changes in computer files.
 
 - `git push -u origin main`
 
+## Revert a git repository to a previous commit
+`
+git revert --no-commit 0766c053..HEAD
+git commit
+git push # if you want to push in a remote repo
+
+## Ignore future changes but keep the file in the repo
+
+`git update-index --assume-unchanged <path/to/file>
+`
+
+The file stays in your working directory.
+Git won’t notice any edits you make locally.
+⚠️ If someone else clones the repo, they’ll still get the same file.
+If you ever want Git to track it again:
+
+`git update-index --no-assume-unchanged <path/to/file>
+`
+
 ## Git stash 
 
-Use `git stash` when you want to record the current state of the working directory and the index, but want to go back to a clean working directory.
+_Note that uncommitted changes live in the working directory and staging area, not in a specific branch.
+That's why it is important to stash the changes before switching to branches, espacially when work is still in progress._
+
+Use `git stash or git stash push -m "message" to  create stash with msg,` when you want to record the current state of the working directory and the index, but want to go back to a clean working directory.
 
 `git stash pop` will take the content from the stash file and then apply those changes to our current working file.
 
