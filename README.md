@@ -67,8 +67,6 @@ Verify it's correct
 `git push --force-with-lease`
 
    ### 3- On a remote Repository(GitHub, BitBucket, ...)
-      
-
        $ git push                            : Push to a remote repository
        $ git pull                            : Pull latest from remote repository
        $ git clone                           : Clone a repository into a new directory
