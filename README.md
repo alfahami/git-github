@@ -264,18 +264,18 @@ A commit message follows this pattern:
 ```
 
 ### Commit Types
-| Type       | Purpose |
-|------------|---------|
-| **feat**   | Introduces a new feature |
-| **fix**    | Fixes a bug |
-| **refactor** | Code change that doesn’t fix a bug or add a feature |
-| **chore**  | Maintenance tasks (e.g., updating dependencies) |
-| **docs**   | Documentation updates (e.g., README changes) |
-| **test**   | Adds or updates tests |
-| **style**  | Formatting (e.g., spaces, indentation, no code changes) |
-| **perf**   | Performance improvements |
-| **ci**     | Changes to CI/CD pipeline |
-| **build**  | Changes affecting the build system or dependencies |
+| Type         | Purpose                                                   |
+|--------------|-----------------------------------------------------------|
+| **feat**     | Introduces a new feature                                  |
+| **fix**      | Fixes a bug                                               |
+| **refactor** | Code change that doesn’t fix a bug or add a feature       |
+| **chore**    | Maintenance tasks (e.g., updating dependencies)           |
+| **docs**     | Documentation updates (e.g., README changes)              |
+| **test**     | Adds or updates tests                                     |
+| **style**    | Formatting (e.g., spaces, indentation, no code changes)   |
+| **perf**     | Performance improvements                                  | 
+| **ci**       | Changes to CI/CD pipeline                                 |
+| **build**    | Changes affecting the build system or dependencies        |
 
 ---
 
