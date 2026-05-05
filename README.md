@@ -82,19 +82,19 @@ Verify it's correct
  Setting up a branch means creating a new pointer for you to move around.
  (master is the branch by default)
             
-       $ git branch <branch name>                : Create branch name
-       $ git switch -c <branch-name>             : Create and switch to branch name ( git checkout -b <branch-name>) |= git branch <branch name> & git checkout <branch name> 
-       $ git rev-parse --abbrev-ref HEAD         : List the current branch you're on without other branches 
-       $ git branch -a                           : List all branches in local and remote repositories
-       $ git branch -r                           : List only remote branches
-       $ git show-branch                         : List branches and their respective commits
-       $ git branch <branch name>                : Creates a new pointer to the same commit you're currently on.
-       $ git checkout <branch name>              : Switch to the branch <name of the branch>
-       $ git merge <branch name>                 : Merge the branch <name of the branch> to the master[Should be on master]
-       $ git push origin <branch name>           : creating remote branches
-       $ git branch -D <name of branch>          : Delete the branch <name of the branch>
-       $ git branch --set-upstream origin <branch name>: Set the <branch name> to track remote branch as origin
-       $ git branch -m old-name new-name          : Renaming a git branch
+       $ git branch <branch name>                        : Create branch name
+       $ git switch -c <branch-name>                     : Create and switch to branch name ( git checkout -b <branch-name>) |= git branch <branch name> & git checkout <branch name> 
+       $ git rev-parse --abbrev-ref HEAD                  : List the current branch you're on without other branches 
+       $ git branch -a                                    : List all branches in local and remote repositories
+       $ git branch -r                                    : List only remote branches
+       $ git show-branch                                  : List branches and their respective commits
+       $ git branch <branch name>                         : Creates a new pointer to the same commit you're currently on.
+       $ git checkout <branch name>                       : Switch to the branch <name of the branch>
+       $ git merge <branch name>                          : Merge the branch <name of the branch> to the master[Should be on master]
+       $ git push origin <branch name>                    : creating remote branches
+       $ git branch -D <name of branch>                   : Delete the branch <name of the branch>
+       $ git branch --set-upstream-to=origin/<branch name>: Set the <branch name> to track remote branch as origin
+       $ git branch -m old-name new-name                  : Renaming a git branch
 
        $ git push --set-upstream origin branch-local-name : Pushes the current branch and set it as the remote upstream.
        To use when the branch only exists locally. 
@@ -134,12 +134,6 @@ Verify it's correct
 ###### Step 4: Push the changes.
 
 - `git push -u origin main`
-
-## Revert a git repository to a previous commit
-`
-git revert --no-commit 0766c053..HEAD
-git commit
-git push # if you want to push in a remote repo
 
 ## Ignore future changes but keep the file in the repo
 
