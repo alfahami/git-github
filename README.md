@@ -82,24 +82,46 @@ Verify it's correct
  Setting up a branch means creating a new pointer for you to move around.
  (master is the branch by default)
             
-       $ git branch <branch name>                        : Create branch name
-       $ git switch -c <branch-name>                     : Create and switch to branch name ( git checkout -b <branch-name>) |= git branch <branch name> & git checkout <branch name> 
-       $ git rev-parse --abbrev-ref HEAD                  : List the current branch you're on without other branches 
-       $ git branch -a                                    : List all branches in local and remote repositories
-       $ git branch -r                                    : List only remote branches
-       $ git show-branch                                  : List branches and their respective commits
-       $ git branch <branch name>                         : Creates a new pointer to the same commit you're currently on.
-       $ git checkout <branch name>                       : Switch to the branch <name of the branch>
-       $ git merge <branch name>                          : Merge the branch <name of the branch> to the master[Should be on master]
-       $ git push origin <branch name>                    : creating remote branches
-       $ git branch -D <name of branch>                   : Delete the branch <name of the branch>
+       $ git branch <branch name>                : Create branch name
+       $ git switch -c <branch-name>             : Create and switch to branch name ( git checkout -b <branch-name>) |= git branch <branch name> & git checkout <branch name> 
+       $ git rev-parse --abbrev-ref HEAD         : List the current branch you're on without other branches 
+       $ git branch -a                           : List all branches in local and remote repositories
+       $ git branch -r                           : List only remote branches
+       $ git show-branch                         : List branches and their respective commits
+       $ git branch <branch name>                : Creates a new pointer to the same commit you're currently on.
+       $ git checkout <branch name>              : Switch to the branch <name of the branch>
+       $ git merge <branch name>                 : Merge the branch <name of the branch> to the master[Should be on master]
+       $ git push origin <branch name>           : creating remote branches
+       $ git branch -D <name of branch>          : Delete the branch <name of the branch>
        $ git branch --set-upstream-to=origin/<branch name>: Set the <branch name> to track remote branch as origin
-       $ git branch -m old-name new-name                  : Renaming a git branch
+       $ git branch -m old-name new-name          : Renaming a git branch
 
        $ git push --set-upstream origin branch-local-name : Pushes the current branch and set it as the remote upstream.
-       To use when the branch only exists locally. 
+       To use when the branch only exists locally.
 
-    
+## Moving Uncommitted Work to a New Branch
+
+If you made changes on the wrong branch and want to move them:
+
+       $ git checkout -b feat/correct-branch    : uncommitted changes travel with you automatically
+       $ git add .
+       $ git commit -m "message"
+
+If you already committed on the wrong branch:
+
+       $ git reset --soft HEAD~1                : undo commit, keep changes staged
+       $ git checkout -b feat/correct-branch
+       $ git commit -m "message"
+
+## Branch Naming — Sub-branches Don't Exist in Git
+
+Git has no concept of sub-branches. The / in a branch name is just a string
+character — purely a human convention for visual grouping.
+
+       feat/FeatureName
+       test/feat/FeatureName     ← only "related" by name, Git has no idea
+
+Git sees both as equal, independent branches. The naming is for YOU, not for Git.
 
 
 ## GitHub
@@ -137,20 +159,45 @@ Verify it's correct
 
 ## Ignore future changes but keep the file in the repo
 
-`git update-index --assume-unchanged <path/to/file>
-`
+`git update-index --assume-unchanged <path/to/file>`
 
 The file stays in your working directory.
-Git won’t notice any edits you make locally.
-⚠️ If someone else clones the repo, they’ll still get the same file.
+Git won't notice any edits you make locally.<br>
+⚠️ If someone else clones the repo, they'll still get the same file.
 If you ever want Git to track it again:
 
-`git update-index --no-assume-unchanged <path/to/file>
-`
-⚠️ Use this only as a performance hint in large repos. 
-For files you actively modify locally (like application.properties), 
-use --skip-worktree instead — assume-unchanged can be silently overwritten 
+`git update-index --no-assume-unchanged <path/to/file>`
+
+⚠️ Use this only as a performance hint in large repos.
+For files you actively modify locally (like application.properties),
+use --skip-worktree instead — assume-unchanged can be silently overwritten
 by Git during merges and checkouts.
+
+## skip-worktree (local config files you never want to push)
+
+.gitignore only works for untracked files. If a file is already committed,
+use skip-worktree to permanently ignore your local changes to it:
+
+       $ git update-index --skip-worktree path/to/application.properties
+       $ git update-index --skip-worktree path/to/logback.xml
+
+The file won't appear in `git status`, won't be touched by `git add .`,
+and won't be committed. <br>Your local changes stay permanently without any effort.
+
+To undo:
+
+       $ git update-index --no-skip-worktree path/to/application.properties
+
+⚠️ skip-worktree breaks during merges — if the incoming merge touches that file,
+Git blocks. Workaround:
+
+       $ cp application.properties application.properties.local.bak   : backup your local values
+       $ git update-index --no-skip-worktree application.properties    : lift skip-worktree
+       $ git merge upstream/<branch>                                   : merge
+       $ git update-index --skip-worktree application.properties       : re-apply skip-worktree
+       $ cp application.properties.local.bak application.properties    : restore your local values
+       $ echo "*.local.bak" >> .git/info/exclude                       : make sure backup is never tracked
+
 
 ## Git stash 
 
@@ -183,15 +230,46 @@ and it'll remove all of the them.
 
 In short
 
-       git stash           // create stash,
-       git stash push -m "message" // create stash with msg,
-       git stash apply         // to apply stash,
-       git stash apply indexno // to apply  specific stash, 
-       git stash list          //list stash,
-       git stash drop indexno      //to delete stash,
-       git stash pop indexno,
+       git stash                        : create stash
+       git stash push -m "message"      : create stash with msg
+       git stash apply                  : to apply stash
+       git stash apply indexno          : to apply specific stash
+       git stash list                   : list stash
+       git stash drop indexno           : to delete stash
+       git stash pop indexno
        git stash pop = stash drop + stash apply
-       git stash clear         //clear all your local stashed code
+       git stash clear                  : clear all your local stashed code
+
+## Stash Naming Convention
+
+Always name stashes with a prefix for clarity:
+
+       git stash push -m "local/properties-logback"       : config files — reused across branches, never pushed
+       git stash push -m "wip/<branch-name>-description"  : WIP code tied to a specific branch
+       git stash push -m "test/what-youre-testing"        : local test data only
+       git stash push -m "drop/whatever"                  : marked for deletion
+
+Golden rules:
+ - Keep ONE local/ config stash total — pop it, use it, re-stash it. Never duplicate.
+ - Never commit with local config applied — re-stash before git push.
+ - Never mix wip/ and local/ in the same stash — stash them separately.
+ - Drop a wip/ stash as soon as its branch is merged.
+
+Renaming a stash (no native rename command):
+
+       $ git stash pop stash@{N}               : pop the one to rename
+       $ git stash push -m "proper/name"        : re-stash with the correct name
+
+Inspecting a stash before applying:
+
+       $ git stash show -p stash@{N}            : see full diff of stash N
+       $ git show stash@{N}:path/to/file        : see one specific file from a stash
+       $ git diff stash@{N} -- path/to/file     : compare stash version vs current
+
+Applying only specific files from a stash (instead of full pop):
+
+       $ git checkout stash@{0} -- path/to/file.java
+
 
 ## Git prune
 
@@ -220,12 +298,17 @@ Reverting a commit means creating a new commit that undoes all changes that were
 
 `git revert {commit_id}`
 
+## Inspecting a Specific Commit
+
+       $ git show <commit-hash>                         : Full diff of everything that changed in that commit
+       $ git show <commit-hash> --stat                  : Just the list of files changed, no diff
+       $ git show <commit-hash> -- path/to/file         : Only one specific file from that commit
+
 ## Revert a git repository to a previous commit
-`
-git revert --no-commit 0766c053..HEAD
-git commit
-git push # if you want to push in a remote repo
-`
+
+`git revert --no-commit 0766c053..HEAD`
+`git commit`
+`git push # if you want to push in a remote repo`
 
 ## Removing files from the staging area
 Below git command will remove all files from staging area
@@ -242,21 +325,14 @@ Using a **commit message convention** keeps your Git history clean, structured, 
 ---
 
 ## Commit Message Structure
-A commit message follows this pattern:  
-
-```
-<type>(<scope>): <short description>
-
-[optional body]
-[optional footer]
-```
+A commit message follows this pattern:
 
 ### Commit Types
 | Type         | Purpose                                                   |
 |--------------|-----------------------------------------------------------|
 | **feat**     | Introduces a new feature                                  |
 | **fix**      | Fixes a bug                                               |
-| **refactor** | Code change that doesn’t fix a bug or add a feature       |
+| **refactor** | Code change that doesn't fix a bug or add a feature       |
 | **chore**    | Maintenance tasks (e.g., updating dependencies)           |
 | **docs**     | Documentation updates (e.g., README changes)              |
 | **test**     | Adds or updates tests                                     |
@@ -268,15 +344,15 @@ A commit message follows this pattern:
 ---
 
 ### 2 Examples for Your Use Case
-#### 🛠 Adding a new repository method
+#### Adding a new repository method
 **feat(holding): Add method to fetch holdings by portfolio ID**  
 **repo: Implement findByPortfolioId query in HoldingRepository**  
 
-#### 🐞 Fixing a bug
+#### Fixing a bug
 **fix(holding): Correct holdings retrieval by portfolio ID**  
 **fix(portfolio): Resolve NPE when fetching holdings**  
 
-#### ♻️ Code refactoring
+#### Code refactoring
 **refactor(repository): Improve query performance for holdings lookup**  
 
 ---
@@ -299,7 +375,7 @@ Where git interprets x^ as the parent of x and + as a forced non-fastforward pus
 
 [Git HowTo: revert a commit already pushed to a remote repository](https://christoph.ruegg.name/blog/git-howto-revert-a-commit-already-pushed-to-a-remote-reposit.html)
 
-## Ways of resolving _ git push rejected non-fastforward_ errors
+## Ways of resolving _`git push rejected non-fastforward`_ errors
 
 Start with a `git pull` or `git pull origin`
 
@@ -333,6 +409,20 @@ Probably you did not fetch the remote changes before the rebase or someone pushe
       
 Get more approaches [here](https://stackoverflow.com/questions/20467179/git-push-rejected-non-fast-forward)
 
+## Divergent Branches on Pull
+
+Happens when two sources commit to the same branch (e.g. you locally + GitHub Actions).
+Git refuses to pull without knowing how to reconcile. Fix permanently with:
+
+       $ git config --global pull.rebase true
+
+Now `git pull` always rebases instead of merging — keeps history linear and
+eliminates the "specify how to reconcile divergent branches" prompt.
+
+For a one-time fix without changing global config:
+
+       $ git pull --rebase origin <branch-name>
+
 
 ## Re-fork a repository
       
@@ -346,6 +436,36 @@ Updating the fork:
        $ git fetch upstream
 
        $ git rebase upstream/master
+
+## Fork Workflow & Remote Tracking
+
+When you `git switch` to a branch fetched from upstream, Git auto-sets tracking
+to upstream. Fix it to point to your fork before pushing:
+
+       $ git remote -v                                    : Check all configured remotes
+       $ git remote add upstream <url>                    : Add upstream when missing (e.g. cloned your fork, not the original)
+       $ git push origin -u <branch-name>                 : Push to your fork AND fix tracking in one command
+       $ git branch -u origin/<branch-name>               : Fix tracking without pushing
+       $ git push origin --delete <branch-name>           : Delete a remote branch (undo a push)
+
+⚠️ "Write access not granted" on git push means your branch is still tracking
+upstream where you have no write access. Always use `git push origin <branch-name>`
+explicitly until tracking is fixed.
+
+⚠️ The "Create a pull request" message after a push is just a suggestion —
+no PR is created until you manually open that URL.
+
+## Fetch a Single File from Another Branch
+
+Pull one specific file from another branch without merging everything:
+
+       $ git checkout upstream/<branch> -- path/to/file.java
+
+The file is overwritten locally and staged automatically.
+To undo:
+
+       $ git checkout HEAD -- path/to/file.java
+
 
 ## Adding SSH to Github
 
