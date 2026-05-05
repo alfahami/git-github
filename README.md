@@ -25,7 +25,7 @@ Version Control System (VCS) for tracking changes in computer files.
 
        $ git init                                : Initialize Local Git Repository
        $ git add <file> |.(*.extension)          : Add file(s) to index | add all files(all with extension) to the staging area
-       $ git reset HEAD add <file> |.(*.extension): Unstage a file | all files (all with extension) from the staging are
+       $ git reset HEAD <file> |.(*.extension): Unstage a file | all files (all with extension) from the staging are
        $ git status                              : Check status of working tree
        $ git commit                              : Commit changes to index
        $ git commit -m 'message of the commit'   : Commit with message and skip opening the default text editor for entering a commit message
@@ -36,8 +36,6 @@ Version Control System (VCS) for tracking changes in computer files.
        $ git config --global credential.helper store : make git store username and passowrd and it will never ask them
        $ git config --global credential.helper cache : save the username and password for a session (cache it)
        $ git config --global credential.helper 'cache --timeout=600' : setting a timeout for the above command
-       $ git revert <ommit_hash> : revert individual commit
-       $ git revert <oldest_commit_hash>..<latest_commit_hash> : reverts the commits between and including the specified commits.
        $ git rebase -i HEAD~x : delete a local commit, x is the nth number from last commit
 
 
@@ -95,7 +93,7 @@ Verify it's correct
        $ git merge <branch name>                 : Merge the branch <name of the branch> to the master[Should be on master]
        $ git push origin <branch name>           : creating remote branches
        $ git branch -D <name of branch>          : Delete the branch <name of the branch>
-       $ git --set-upstream origin <branch name>: Set the <branch name> to track remote branch as origin
+       $ git branch --set-upstream origin <branch name>: Set the <branch name> to track remote branch as origin
        $ git branch -m old-name new-name          : Renaming a git branch
 
        $ git push --set-upstream origin branch-local-name : Pushes the current branch and set it as the remote upstream.
@@ -155,6 +153,10 @@ If you ever want Git to track it again:
 
 `git update-index --no-assume-unchanged <path/to/file>
 `
+⚠️ Use this only as a performance hint in large repos. 
+For files you actively modify locally (like application.properties), 
+use --skip-worktree instead — assume-unchanged can be silently overwritten 
+by Git during merges and checkouts.
 
 ## Git stash 
 
@@ -217,14 +219,6 @@ the git config command is a convenient utility to quickly create aliases.
 
 
        git config --global alias.co checkout
-
-
-## Revert a git repository to a previous commit
-`
-git revert --no-commit 0766c053..HEAD
-git commit
-git push # if you want to push in a remote repo
-`
 
 ## Revert a commit pushed remotely
 
