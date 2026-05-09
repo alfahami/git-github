@@ -1,3 +1,9 @@
+> 📖 This guide is now available and maintained as a dedicated reference on [Codelogium](https://codelogium.github.io/lab/git/) — split into 3 focused articles:
+> - [Basics & Daily Commands](https://codelogium.github.io/lab/git/basics/)
+> - [Branches, Stash & Undoing](https://codelogium.github.io/lab/git/branching-stash/)
+> - [Remotes & Workflows](https://codelogium.github.io/lab/git/remotes-workflows/)
+
+# Git & GitHub
 # Git & GitHub
 
 #### Basic commands of pushing, pulling, merging, creating branches, adding ssh key to github, gist to github ... with Git & GitHub
