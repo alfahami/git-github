@@ -20,7 +20,6 @@ Version Control System (VCS) for tracking changes in computer files.
  * You can stage files before committing
 
 ## BASIC COMMANDS
-
 ### 1- On a local Repository
 
        $ git init                                : Initialize Local Git Repository
@@ -38,11 +37,9 @@ Version Control System (VCS) for tracking changes in computer files.
        $ git config --global credential.helper 'cache --timeout=600' : setting a timeout for the above command
        $ git rebase -i HEAD~x : delete a local commit, x is the nth number from last commit
 
-
      When there is changes that are not staged for commit:
        $ git checkout --<file> ..            : Discrad changes in working directory
        $ git add/rm                          : Update what will be committed
-
   ### 2- Amending the most recent commit message (change last commit message)
        `$ git commit --amend`
       
@@ -52,18 +49,14 @@ Additionally, you can set the commit message directly in the command line with:
       `$ git commit --amend -m "New commit message"`
        
 …however, this can make multi-line commit messages or small corrections more cumbersome to enter.
-
 Make sure you don't have any working copy changes staged before doing this or they will get committed too. (Unstaged changes will not get committed.)
 
 #### Amend the last commit with the correct author
 `git commit --amend --reset-author --no-edit`
-
 Verify it's correct
 `git log -1 --pretty=format:"%an <%ae>"`
-
 #### Force to push
 `git push --force-with-lease`
-
    ### 3- On a remote Repository(GitHub, BitBucket, ...)
        $ git push                            : Push to a remote repository
        $ git pull                            : Pull latest from remote repository
@@ -98,9 +91,7 @@ Verify it's correct
 
        $ git push --set-upstream origin branch-local-name : Pushes the current branch and set it as the remote upstream.
        To use when the branch only exists locally.
-
 ## Moving Uncommitted Work to a New Branch
-
 If you made changes on the wrong branch and want to move them:
 
        $ git checkout -b feat/correct-branch    : uncommitted changes travel with you automatically
@@ -114,7 +105,6 @@ If you already committed on the wrong branch:
        $ git commit -m "message"
 
 ## Branch Naming — Sub-branches Don't Exist in Git
-
 Git has no concept of sub-branches. The / in a branch name is just a string
 character — purely a human convention for visual grouping.
 
@@ -123,9 +113,7 @@ character — purely a human convention for visual grouping.
 
 Git sees both as equal, independent branches. The naming is for YOU, not for Git.
 
-
 ## GitHub
-
  A free tool that lets you host your local repository eventually repositories.
 
        $ git remote                                : List all the remote repositroy linked to gitote repository to git
@@ -139,12 +127,10 @@ Git sees both as equal, independent branches. The naming is for YOU, not for Git
 
 ## Merge a pull request
 
-
 ###### Step 1: Clone the repository or update your local repository with the latest changes.
 
 - `git pull origin main`
   
-
 ###### Step 2: Switch to the base branch of the pull request.
 
 - `git checkout main`
@@ -198,7 +184,6 @@ Git blocks. Workaround:
        $ cp application.properties.local.bak application.properties    : restore your local values
        $ echo "*.local.bak" >> .git/info/exclude                       : make sure backup is never tracked
 
-
 ## Git stash 
 
 _Note that uncommitted changes live in the working directory and staging area, not in a specific branch.
@@ -241,7 +226,6 @@ In short
        git stash clear                  : clear all your local stashed code
 
 ## Stash Naming Convention
-
 Always name stashes with a prefix for clarity:
 
        git stash push -m "local/properties-logback"       : config files — reused across branches, never pushed
@@ -269,8 +253,6 @@ Inspecting a stash before applying:
 Applying only specific files from a stash (instead of full pop):
 
        $ git checkout stash@{0} -- path/to/file.java
-
-
 ## Git prune
 
  Command is an internal housekeeping utility that cleans up unreachable or "orphaned" Git objects.
@@ -288,7 +270,6 @@ Applying only specific files from a stash (instead of full pop):
         co = checkout
 
 the git config command is a convenient utility to quickly create aliases. 
-
 
        git config --global alias.co checkout
 
@@ -410,7 +391,6 @@ Probably you did not fetch the remote changes before the rebase or someone pushe
 Get more approaches [here](https://stackoverflow.com/questions/20467179/git-push-rejected-non-fast-forward)
 
 ## Divergent Branches on Pull
-
 Happens when two sources commit to the same branch (e.g. you locally + GitHub Actions).
 Git refuses to pull without knowing how to reconcile. Fix permanently with:
 
@@ -422,8 +402,6 @@ eliminates the "specify how to reconcile divergent branches" prompt.
 For a one-time fix without changing global config:
 
        $ git pull --rebase origin <branch-name>
-
-
 ## Re-fork a repository
       
 When the upstream forked repo got added new entries to be merge in your own forked repo
@@ -456,7 +434,6 @@ explicitly until tracking is fixed.
 no PR is created until you manually open that URL.
 
 ## Fetch a Single File from Another Branch
-
 Pull one specific file from another branch without merging everything:
 
        $ git checkout upstream/<branch> -- path/to/file.java
@@ -466,9 +443,7 @@ To undo:
 
        $ git checkout HEAD -- path/to/file.java
 
-
 ## Adding SSH to Github
-
 * Checking for existing ssh keys
        
        $ ls -al ~/.ssh
@@ -483,7 +458,6 @@ To undo:
  * Generate an ssh key by:
       
        $ ssh-keygen -t ed25519 -C "your_email@example.com"
-
 
       Note: If you are using a legacy system that doesn't support the Ed25519 algorithm, use:
              
