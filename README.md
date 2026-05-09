@@ -4,7 +4,6 @@
 > - [Remotes & Workflows](https://codelogium.github.io/lab/git/remotes-workflows/)
 
 # Git & GitHub
-# Git & GitHub
 
 #### Basic commands of pushing, pulling, merging, creating branches, adding ssh key to github, gist to github ... with Git & GitHub
 
