@@ -502,6 +502,41 @@ To undo:
   * Paste your key into the "Key" field. 
   * Click Add SSH key. 
   * If prompted, confirm your GitHub password. 
+  
+## Multiple Git Identities (Conditional Includes)
+
+Problem: using a work PC with work Git credentials, wanting personal project
+commits attributed to a personal identity.
+
+Solution: Git's `[includeIf]` with `hasconfig:remote.*.url` — switches
+credentials automatically based on the repo's remote URL, no folder structure required.
+
+**`~/.gitconfig`**
+
+       [user]
+           email = work@company.com
+           name = Work Name
+
+       [includeIf "hasconfig:remote.*.url:git@github.com:yourusername/**"]
+           path = ~/.gitconfig-personal
+
+       [includeIf "hasconfig:remote.*.url:git@gitea.example.com:yourusername/**"]
+           path = ~/.gitconfig-oliveit
+
+**`~/.gitconfig-personal`**
+
+       [user]
+           email = personal@gmail.com
+           name = Personal Name
+
+Key points:
+ - `~/.ssh/config` handles SSH key routing per host — separate from `~/.gitconfig`
+ - `hasconfig` matches on remote URL pattern, smarter than folder-based `gitdir`
+ - Verify which config file is being used: `git config --show-origin user.email`
+ - Inspect the full config chain: `git config --list --show-origin`
+
+⚠️ The `[includeIf]` block must go in `~/.gitconfig`, NOT in `~/.ssh/config`.
+   SSH config only understands Host blocks — mixing them breaks git clone.
 
 ## Transfer a gist (gistrepo) to github (ghrepo)
 
